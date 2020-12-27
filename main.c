@@ -3,13 +3,21 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include <termios.h>
 #include <unistd.h>
 
 #include "field.h"
 #include "interface.h"
 
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
+#define OS_WIN
+#endif
 
+#ifdef OS_WIN
+
+#include <conio.h>
+
+#else
+#include <termios.h>
 /* Shamelessly stolen from
  * https://www.includehelp.com/c-programs/gotoxy-clrscr-getch-getche-for-gcc-linux.aspx
  * */
@@ -34,7 +42,7 @@ char getch() {
   resetTermios();
   return ch;
 }
-
+#endif
 
 
 int game_loop(struct field_s* field) {
